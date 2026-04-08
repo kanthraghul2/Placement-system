@@ -1,8 +1,14 @@
+// Load students on page load
+window.onload = function () {
+    displayStudents();
+};
+
+// Add Student
 function addStudent() {
     let data = {
-        name: document.getElementById("name").value,
-        company: document.getElementById("company").value,
-        role: document.getElementById("role").value,
+        name: document.getElementById("name").value.trim(),
+        company: document.getElementById("company").value.trim(),
+        role: document.getElementById("role").value.trim(),
         status: document.getElementById("status").value
     };
 
@@ -11,15 +17,14 @@ function addStudent() {
         return;
     }
 
-    fetch("http://localhost:8081/add", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(() => {
-        alert("Saved to Database ✅");
-        loadStudents();
-    });
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+
+    students.push(data);
+
+    localStorage.setItem("students", JSON.stringify(students));
+
+    alert("Student Added ✅");
+
+    clearForm();
+    displayStudents();
 }

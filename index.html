@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Placement Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Placement Management System</h1>
+
+<div class="form">
+    <input type="text" id="search" placeholder="Search by name..." onkeyup="searchStudent()">
+    <input type="text" id="name" placeholder="Student Name">
+    <input type="text" id="company" placeholder="Company Name">
+    <input type="text" id="role" placeholder="Role">
+    <select id="status">
+    <option value="Placed">Placed</option>
+    <option value="Not Placed">Not Placed</option>
+</select>
+    <button onclick="addStudent()">Add Student</button>
+</div>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="studentList"></tbody>
+</table>
+
+<script src="script.js"></script>
+</body>
+</html>

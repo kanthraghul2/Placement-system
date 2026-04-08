@@ -1,7 +1,7 @@
-// Load data when page opens
-window.onload = function () {
+// Run when page loads
+document.addEventListener("DOMContentLoaded", function () {
     displayStudents();
-};
+});
 
 // Add Student
 function addStudent() {
@@ -17,14 +17,7 @@ function addStudent() {
 
     let students = JSON.parse(localStorage.getItem("students")) || [];
 
-    let newStudent = {
-        name: name,
-        company: company,
-        role: role,
-        status: status
-    };
-
-    students.push(newStudent);
+    students.push({ name, company, role, status });
 
     localStorage.setItem("students", JSON.stringify(students));
 
@@ -32,14 +25,18 @@ function addStudent() {
 
     clearForm();
 
-    // Force refresh UI
-    displayStudents();
+    // 🔥 Force UI update properly (mobile fix)
+    setTimeout(() => {
+        displayStudents();
+    }, 100);
 }
 
 // Display Students
 function displayStudents() {
     let students = JSON.parse(localStorage.getItem("students")) || [];
     let list = document.getElementById("studentList");
+
+    if (!list) return;
 
     list.innerHTML = "";
 
@@ -71,7 +68,7 @@ function displayStudents() {
 function deleteStudent(index) {
     let students = JSON.parse(localStorage.getItem("students")) || [];
 
-    if (confirm("Are you sure you want to delete?")) {
+    if (confirm("Delete this student?")) {
         students.splice(index, 1);
         localStorage.setItem("students", JSON.stringify(students));
         displayStudents();

@@ -74,6 +74,20 @@ function deleteStudent(index) {
         displayStudents();
     }
 }
+function editStudent(index) {
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+    let s = students[index];
+
+    document.getElementById("name").value = s.name;
+    document.getElementById("company").value = s.company;
+    document.getElementById("role").value = s.role;
+    document.getElementById("status").value = s.status;
+
+    students.splice(index, 1);
+    localStorage.setItem("students", JSON.stringify(students));
+
+    displayStudents();
+}
 
 // Search Student
 function searchStudent() {
@@ -102,9 +116,10 @@ function searchStudent() {
             <td>${student.company}</td>
             <td>${student.role}</td>
             <td><span class="${statusClass}">${student.status}</span></td>
-            <td>
-                <button onclick="deleteStudent(${index})">Delete</button>
-            </td>
+           <td>
+    <button onclick="editStudent(${index})">Edit</button>
+    <button onclick="deleteStudent(${index})">Delete</button>
+</td>
         `;
 
         list.appendChild(row);
@@ -117,4 +132,15 @@ function clearForm() {
     document.getElementById("company").value = "";
     document.getElementById("role").value = "";
     document.getElementById("status").value = "Placed";
+}
+function updateDashboard() {
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+
+    document.getElementById("total").innerText = students.length;
+
+    let placed = students.filter(s => s.status === "Placed").length;
+    let notPlaced = students.length - placed;
+
+    document.getElementById("placedCount").innerText = placed;
+    document.getElementById("notPlacedCount").innerText = notPlaced;
 }

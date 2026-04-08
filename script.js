@@ -144,3 +144,14 @@ function updateDashboard() {
     document.getElementById("placedCount").innerText = placed;
     document.getElementById("notPlacedCount").innerText = notPlaced;
 }
+function updateDashboard() {
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+
+    document.getElementById("total").innerText = students.length;
+
+    let placed = students.filter(s => s.status === "Placed").length;
+    let notPlaced = students.length - placed;
+
+    document.getElementById("placedCount").innerText = placed;
+    document.getElementById("notPlacedCount").innerText = notPlaced;
+}

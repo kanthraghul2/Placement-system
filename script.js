@@ -24,11 +24,7 @@ function addStudent() {
     alert("Student Added ✅");
 
     clearForm();
-
-    // 🔥 Force UI update properly (mobile fix)
-    setTimeout(() => {
-        displayStudents();
-    }, 100);
+    displayStudents();
 }
 
 // Display Students
@@ -36,12 +32,11 @@ function displayStudents() {
     let students = JSON.parse(localStorage.getItem("students")) || [];
     let list = document.getElementById("studentList");
 
-    if (!list) return;
-
     list.innerHTML = "";
 
     if (students.length === 0) {
         list.innerHTML = `<tr><td colspan="5">No data found</td></tr>`;
+        updateDashboard();
         return;
     }
 
@@ -56,12 +51,16 @@ function displayStudents() {
             <td>${student.role}</td>
             <td><span class="${statusClass}">${student.status}</span></td>
             <td>
+                <button onclick="editStudent(${index})">Edit</button>
                 <button onclick="deleteStudent(${index})">Delete</button>
             </td>
         `;
 
         list.appendChild(row);
     });
+
+    // 🔥 VERY IMPORTANT
+    updateDashboard();
 }
 
 // Delete Student
@@ -74,6 +73,8 @@ function deleteStudent(index) {
         displayStudents();
     }
 }
+
+// Edit Student
 function editStudent(index) {
     let students = JSON.parse(localStorage.getItem("students")) || [];
     let s = students[index];
@@ -116,10 +117,10 @@ function searchStudent() {
             <td>${student.company}</td>
             <td>${student.role}</td>
             <td><span class="${statusClass}">${student.status}</span></td>
-           <td>
-    <button onclick="editStudent(${index})">Edit</button>
-    <button onclick="deleteStudent(${index})">Delete</button>
-</td>
+            <td>
+                <button onclick="editStudent(${index})">Edit</button>
+                <button onclick="deleteStudent(${index})">Delete</button>
+            </td>
         `;
 
         list.appendChild(row);
@@ -133,17 +134,8 @@ function clearForm() {
     document.getElementById("role").value = "";
     document.getElementById("status").value = "Placed";
 }
-function updateDashboard() {
-    let students = JSON.parse(localStorage.getItem("students")) || [];
 
-    document.getElementById("total").innerText = students.length;
-
-    let placed = students.filter(s => s.status === "Placed").length;
-    let notPlaced = students.length - placed;
-
-    document.getElementById("placedCount").innerText = placed;
-    document.getElementById("notPlacedCount").innerText = notPlaced;
-}
+// Dashboard Update (ONLY ONCE)
 function updateDashboard() {
     let students = JSON.parse(localStorage.getItem("students")) || [];
 
